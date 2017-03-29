@@ -21,7 +21,7 @@ public protocol ArekPermissionProtocol {
      Parameter completion: this closure is invoked with the current permission status (ArekPermissionStatus)
      */
     func status(completion: @escaping ArekPermissionResponse)
-
+    
     /**
      This is the key method to manage the request for a permission.
      
@@ -49,9 +49,9 @@ open class ArekBasePermission {
      Base init shared among each permission provided by Arek
      
      - Parameters:
-         - configuration: ArekConfiguration object used to define the behaviour of the pre-iOS popup and the re-enable permission popup
-         - initialPopupData: title and message related to pre-iOS popup
-         - reEnablePopupData: title and message related to re-enable permission popup
+     - configuration: ArekConfiguration object used to define the behaviour of the pre-iOS popup and the re-enable permission popup
+     - initialPopupData: title and message related to pre-iOS popup
+     - reEnablePopupData: title and message related to re-enable permission popup
      */
     public init(configuration: ArekConfiguration? = nil,  initialPopupData: ArekPopupData? = nil, reEnablePopupData: ArekPopupData? = nil) {
         self.configuration = configuration ?? self.configuration
@@ -123,14 +123,14 @@ open class ArekBasePermission {
         }
     }
     
-    private func presentReEnablePopup() {        
+    private func presentReEnablePopup() {
         if self is ArekPermissionProtocol && self.configuration.canPresentReEnablePopup(permission: (self as! ArekPermissionProtocol)) {
             self.presentReEnablePopup(title: self.reEnablePopupData.title, message: self.reEnablePopupData.message, image: self.reEnablePopupData.image, allowButtonTitle: self.reEnablePopupData.allowButtonTitle, denyButtonTitle: self.reEnablePopupData.denyButtonTitle)
         } else {
             print("[🚨 Arek 🚨] for \(self) present re-enable not allowed")
         }
     }
-
+    
     private func presentReEnablePopup(title: String, message: String, image: String?, allowButtonTitle: String, denyButtonTitle: String) {
         switch self.reEnablePopupData.type as ArekPopupType {
         case .codeido:
@@ -169,7 +169,7 @@ open class ArekBasePermission {
             
             topController.present(alert, animated: true, completion: nil)
         }
-
+        
     }
     
     private func presentReEnableCodeidoPopup(title: String, message: String, image: String, allowButtonTitle: String, denyButtonTitle: String) {
@@ -207,10 +207,10 @@ open class ArekBasePermission {
     internal func managePermission(status: ArekPermissionStatus, completion: @escaping ArekPermissionResponse) {
         switch status {
         case .notDetermined:
-            self.manageInitialPopup(completion: completion)
+            //self.manageInitialPopup(completion: completion)
             break
         case .denied:
-            self.presentReEnablePopup()
+            //self.presentReEnablePopup()
             return completion(.denied)
         case .authorized:
             return completion(.authorized)
